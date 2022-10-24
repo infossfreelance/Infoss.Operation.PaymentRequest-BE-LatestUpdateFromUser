@@ -8,6 +8,7 @@ namespace Infoss.Operation.PaymentRequestModel
         public int CountryId { get; set; }
         public int CompanyId { get; set; }
         public int BranchId { get; set; }
+        public string FilterType { get; set; }
         public fieldFilter[] Filter { get; set; }
     }
     public class fieldFilter

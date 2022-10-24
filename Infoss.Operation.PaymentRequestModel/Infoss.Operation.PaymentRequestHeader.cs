@@ -11,6 +11,7 @@
         public int PRNo { get; set; } = 0;
         public string DebetCredit { get; set; } = string.Empty;
         public int ShipmentId { get; set; } = 0;
+        public string ShipmentNo { get; set; } = string.Empty;
         public string Reference { get; set; } = string.Empty;
         public int PRStatus { get; set; } = 0;
         public bool IsGeneralPR { get; set; }
