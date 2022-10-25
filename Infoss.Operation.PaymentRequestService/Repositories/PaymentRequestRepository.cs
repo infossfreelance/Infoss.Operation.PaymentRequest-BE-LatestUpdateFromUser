@@ -36,11 +36,7 @@ namespace Infoss.Operation.PaymentRequestService.Repositories
                     x = requestPage.UserLogin.Filter[i].Data;
                     if (y != "")
                     {
-                        if (y == "DebetCredit")
-                        {
-                            queryfilter = queryfilter + " AND prdtl." + y + " LIKE '%" + x + "%' ";
-                        }
-                        else if (y == "ShipmentNo" && requestPage.UserLogin.FilterType == "Job")
+                        if (y == "ShipmentNo" && requestPage.UserLogin.FilterType == "Job")
                         {
                             queryfilter = queryfilter + " AND SUBSTRING(pr." + y + ",CHARINDEX('.',pr." + y + ")+1,CHARINDEX('.',pr." + y + ")-(CHARINDEX('.',pr." + y + ")-2)) LIKE '%" + x + "%' ";
                         }
