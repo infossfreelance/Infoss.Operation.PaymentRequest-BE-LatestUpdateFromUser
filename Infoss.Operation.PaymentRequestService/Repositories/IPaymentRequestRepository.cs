@@ -8,6 +8,8 @@ namespace Infoss.Operation.PaymentRequestService.Repositories
         public Task<Response> Create(PaymentRequestTransaction paymentRequest);
         public Task<Response> Update(PaymentRequestTransaction paymentRequest);
         public Task<Response> Delete(RequestId requestId);
+        public Task<Response> Approval(PaymentRequestApproval paymentRequest);
+        public Task<Response> UpdateStatusPrint(PaymentRequestPrintingRequest invoiceRequest);
 
     }
 }

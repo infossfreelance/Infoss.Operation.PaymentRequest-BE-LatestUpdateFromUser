@@ -84,5 +84,18 @@ namespace Infoss.Operation.PaymentRequestService.Controllers
 
         }
 
+        [Route("Approval")]
+        [HttpPut]
+        public async Task<Response> Approve([FromBody] PaymentRequestApproval paymentRequest)
+        {
+            return await paymentRequestRepository.Approval(paymentRequest);
+        }
+
+        [Route("UpdateStatusPrinting")]
+        [HttpPut]
+        public async Task<Response> PutStatusPrint([FromBody] PaymentRequestPrintingRequest paymentRequest)
+        {
+            return await paymentRequestRepository.UpdateStatusPrint(paymentRequest);
+        }
     }
 }

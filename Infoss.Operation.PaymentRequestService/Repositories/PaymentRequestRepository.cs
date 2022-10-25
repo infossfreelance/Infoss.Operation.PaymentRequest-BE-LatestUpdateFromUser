@@ -313,5 +313,77 @@ namespace Infoss.Operation.PaymentRequestService.Repositories
             }
         }
 
+        public async Task<Response> Approval(PaymentRequestApproval paymentRequest)
+        {
+            var response = new Response();
+            var responsePage = new Response();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+
+                parameters.Add("@Id", paymentRequest.Id);
+                parameters.Add("@Id", paymentRequest.CountryId);
+                parameters.Add("@Id", paymentRequest.CompanyId);
+                parameters.Add("@Id", paymentRequest.BranchId);
+                parameters.Add("@Id", paymentRequest.ApprovedRemarks);
+                parameters.Add("@Flag", paymentRequest.Flag);
+
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    var affectedRows = await connection.ExecuteAsync("operation.SP_PaymentRequest_Approval", parameters, commandType: CommandType.StoredProcedure);
+
+                    responsePage.Code = 200;
+                    responsePage.Message = "Data Approved";
+
+                    return responsePage;
+                }
+            }
+            catch (Exception ex)
+            {
+                responsePage.Code = 500;
+                responsePage.Error = ex.Message;
+                responsePage.Message = "Faile to approve";
+
+                return responsePage;
+            }
+        }
+
+        public async Task<Response> UpdateStatusPrint(PaymentRequestPrintingRequest invoiceRequest)
+        {
+            var response = new Response();
+            var responsePage = new Response();
+
+            try
+            {
+                var parameters = new DynamicParameters();
+
+                parameters.Add("@RowStatus", invoiceRequest.RowStatus == "" ? "ACT" : invoiceRequest.RowStatus);
+                parameters.Add("@CountryId", invoiceRequest.CountryId);
+                parameters.Add("@CompanyId", invoiceRequest.CompanyId);
+                parameters.Add("@BranchId", invoiceRequest.BranchId);
+                parameters.Add("@Id", invoiceRequest.Id);
+                parameters.Add("@Printing", invoiceRequest.Printing);
+                parameters.Add("@ModifiedBy", invoiceRequest.User);
+
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    var affectedRows = await connection.ExecuteAsync("operation.SP_PaymentRequest_Printing_Status_Update", parameters, commandType: CommandType.StoredProcedure);
+
+                    responsePage.Code = 200;
+                    responsePage.Message = "Data Updated";
+
+                    return responsePage;
+                }
+            }
+            catch (Exception ex)
+            {
+                responsePage.Code = 500;
+                responsePage.Error = ex.Message;
+                responsePage.Message = "Faile to update";
+
+                return responsePage;
+            }
+        }
     }
 }
