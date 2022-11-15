@@ -14,5 +14,11 @@ namespace Infoss.Operation.PaymentRequestModel
         public int CompanyId { get; set; } = 0;
         public int BranchId { get; set; } = 0;
         public string ApprovedRemarks { get; set; } = string.Empty;
+        public List<listId> ids { get; set; } = new List<listId>();
+    }
+
+    public class listId
+    {
+        public int id { get; set; }
     }
 }

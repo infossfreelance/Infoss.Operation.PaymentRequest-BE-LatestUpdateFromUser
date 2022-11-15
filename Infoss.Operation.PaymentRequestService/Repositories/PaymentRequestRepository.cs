@@ -316,31 +316,51 @@ namespace Infoss.Operation.PaymentRequestService.Repositories
 
             try
             {
-                var parameters = new DynamicParameters();
-
-                parameters.Add("@Id", paymentRequest.Id);
-                parameters.Add("@Id", paymentRequest.CountryId);
-                parameters.Add("@Id", paymentRequest.CompanyId);
-                parameters.Add("@Id", paymentRequest.BranchId);
-                parameters.Add("@Id", paymentRequest.ApprovedRemarks);
-                parameters.Add("@Flag", paymentRequest.Flag);
-
-                using (var connection = new SqlConnection(connectionString))
+                foreach (var item in paymentRequest.ids)
                 {
-                    var affectedRows = await connection.ExecuteAsync("operation.SP_PaymentRequest_Approval", parameters, commandType: CommandType.StoredProcedure);
+                    paymentRequest.Id = item.id;
 
-                    responsePage.Code = 200;
-                    responsePage.Message = "Data Approved";
+                    var parameters = new DynamicParameters();
 
-                    return responsePage;
+                    parameters.Add("@Id", item.id);
+                    parameters.Add("@CountryId", paymentRequest.CountryId);
+                    parameters.Add("@CompanyId", paymentRequest.CompanyId);
+                    parameters.Add("@BranchId", paymentRequest.BranchId);
+                    parameters.Add("@Remarks", paymentRequest.ApprovedRemarks);
+                    parameters.Add("@Flag", paymentRequest.Flag);
+
+                    using (var connection = new SqlConnection(connectionString))
+                    {
+                        var affectedRows = await connection.ExecuteAsync("operation.SP_PaymentRequest_Approval", parameters, commandType: CommandType.StoredProcedure);
+
+                        responsePage.Code = 200;
+                        if (paymentRequest.Flag == 4)
+                        {
+                            responsePage.Message = "Open Approved Success";
+                        }
+                        else
+                        {
+                            responsePage.Message = "Data Approved";
+                        }
+                    }
                 }
+
+                return responsePage;
+
             }
             catch (Exception ex)
             {
                 responsePage.Code = 500;
                 responsePage.Error = ex.Message;
-                responsePage.Message = "Faile to approve";
-
+                if (paymentRequest.Flag == 4)
+                {
+                    responsePage.Message = "Id " + paymentRequest.Id + "failed to Open Approve";
+                }
+                else
+                {
+                    responsePage.Message = "Failed to approve";
+                }
+                
                 return responsePage;
             }
         }
