@@ -10,6 +10,7 @@ namespace Infoss.Operation.PaymentRequestModel
     {
         public int Id { get; set; } = 0;
         public int Flag { get; set; } = 0;
+        public bool IsApprove { get; set; } = false;
         public int CountryId { get; set; } = 0;
         public int CompanyId { get; set; } = 0;
         public int BranchId { get; set; } = 0;
